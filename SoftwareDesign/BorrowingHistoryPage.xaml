@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SoftwareDesign.BorrowingHistoryPage"
+             Title="Borrowing History"
+             BackgroundColor="#F2F2F7">
+
+    <Grid RowDefinitions="Auto, Auto, *" Padding="0">
+
+        <!-- 📌 HEADER SECTION -->
+        <Frame Grid.Row="0" 
+               BackgroundColor="#000E38" 
+               CornerRadius="0"
+               Padding="25,20"
+               HasShadow="True"
+               Margin="0">
+
+            <Grid ColumnDefinitions="*, Auto">
+
+                <!-- Left Side: Title & Stats -->
+                <VerticalStackLayout Grid.Column="0" 
+                                   VerticalOptions="Center" 
+                                   Spacing="5">
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="📚" FontSize="24"/>
+                        <Label Text="Borrowing History" 
+                               TextColor="White" 
+                               FontSize="20" 
+                               FontAttributes="Bold"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="15" Margin="34,0,0,0">
+                        <Label x:Name="TotalRecordsLabel"
+                               Text="0 Total Records" 
+                               TextColor="#94a3b8" 
+                               FontSize="12"/>
+                        <Label Text="•" TextColor="#94a3b8" FontSize="12"/>
+                        <Label x:Name="ReturnedCountLabel"
+                               Text="0 Returned" 
+                               TextColor="#34C759" 
+                               FontSize="12"/>
+                        <Label Text="•" TextColor="#94a3b8" FontSize="12"/>
+                        <Label x:Name="ActiveCountLabel"
+                               Text="0 Active" 
+                               TextColor="#007AFF" 
+                               FontSize="12"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Right Side: Close Button -->
+                <Button Grid.Column="1"
+                        Text="✕"
+                        FontSize="20"
+                        WidthRequest="45"
+                        HeightRequest="45"
+                        CornerRadius="8"
+                        BackgroundColor="Transparent"
+                        TextColor="#FF3B30"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        Clicked="OnCloseClicked" />
+            </Grid>
+        </Frame>
+
+        <!-- 🔍 FILTER BAR -->
+        <Frame Grid.Row="1"
+               BackgroundColor="White"
+               CornerRadius="8"
+               Padding="15,10"
+               HasShadow="True"
+               Margin="40,15,40,10">
+
+            <Grid ColumnDefinitions="*, Auto">
+                
+                <Picker x:Name="FilterPicker"
+                        Grid.Column="0"
+                        Title="Filter by Status"
+                        FontSize="13"
+                        TextColor="#000E38"
+                        SelectedIndexChanged="OnFilterChanged">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>All Records</x:String>
+                            <x:String>Active Only</x:String>
+                            <x:String>Returned Only</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+
+                <Label Grid.Column="1"
+                       x:Name="RecordCountLabel"
+                       Text="0 records"
+                       TextColor="Gray"
+                       FontSize="12"
+                       VerticalOptions="Center"
+                       Margin="10,0,0,0"/>
+            </Grid>
+        </Frame>
+
+        <!-- 📋 HISTORY LIST -->
+        <Frame Grid.Row="2"
+               BackgroundColor="White"
+               CornerRadius="8"
+               Padding="0"
+               HasShadow="True"
+               Margin="40,0,40,40">
+
+            <Grid RowDefinitions="Auto, *">
+                
+                <!-- Table Header -->
+                <Grid Grid.Row="0"
+                      BackgroundColor="#F9FAFB"
+                      Padding="15,10"
+                      ColumnDefinitions="30, 2*, 1.5*, 1*, 1*, 1*, 80">
+                    
+                    <Label Grid.Column="0" Text="📋" FontSize="12" FontAttributes="Bold"/>
+                    <Label Grid.Column="1" Text="Document" TextColor="#000E38" FontSize="11" FontAttributes="Bold"/>
+                    <Label Grid.Column="2" Text="Borrower" TextColor="#000E38" FontSize="11" FontAttributes="Bold"/>
+                    <Label Grid.Column="3" Text="Course" TextColor="#000E38" FontSize="11" FontAttributes="Bold"/>
+                    <Label Grid.Column="4" Text="Borrowed" TextColor="#000E38" FontSize="11" FontAttributes="Bold"/>
+                    <Label Grid.Column="5" Text="Duration" TextColor="#000E38" FontSize="11" FontAttributes="Bold"/>
+                    <Label Grid.Column="6" Text="Status" TextColor="#000E38" FontSize="11" FontAttributes="Bold" HorizontalOptions="Center"/>
+                </Grid>
+
+                <!-- Empty State -->
+                <VerticalStackLayout Grid.Row="1"
+                                   x:Name="EmptyView"
+                                   IsVisible="False"
+                                   Spacing="15"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center">
+                    
+                    <Label Text="📭" FontSize="50" HorizontalOptions="Center"/>
+                    <Label Text="No Records Found" 
+                           TextColor="#000E38" 
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+                    <Label Text="No borrowing history available" 
+                           TextColor="Gray" 
+                           FontSize="13"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
+                <!-- Records List -->
+                <ScrollView Grid.Row="1">
+                    <CollectionView x:Name="HistoryList"
+                                  SelectionMode="None">
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                
+                                <!-- Compact Row -->
+                                <Grid Padding="15,8"
+                                      ColumnDefinitions="30, 2*, 1.5*, 1*, 1*, 1*, 80"
+                                      BackgroundColor="White">
+
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnRecordTapped" CommandParameter="{Binding .}"/>
+                                    </Grid.GestureRecognizers>
+
+                                    <!-- Status Icon -->
+                                    <Label Grid.Column="0" 
+                                           Text="{Binding StatusIcon}" 
+                                           FontSize="14"
+                                           VerticalOptions="Center"/>
+
+                                    <!-- Document Type -->
+                                    <Label Grid.Column="1" 
+                                           Text="{Binding Document_Type}" 
+                                           TextColor="#000E38"
+                                           FontSize="12"
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Center"
+                                           LineBreakMode="TailTruncation"/>
+
+                                    <!-- Borrower Name -->
+                                    <Label Grid.Column="2" 
+                                           Text="{Binding Borrower_Name}" 
+                                           TextColor="Gray"
+                                           FontSize="11"
+                                           VerticalOptions="Center"
+                                           LineBreakMode="TailTruncation"/>
+
+                                    <!-- Course ID -->
+                                    <Label Grid.Column="3" 
+                                           Text="{Binding Course_ID}" 
+                                           TextColor="Gray"
+                                           FontSize="11"
+                                           VerticalOptions="Center"
+                                           LineBreakMode="TailTruncation"/>
+
+                                    <!-- Borrow Date -->
+                                    <Label Grid.Column="4" 
+                                           Text="{Binding Borrow_Date, StringFormat='{0:dd/MM/yy}'}" 
+                                           TextColor="Gray"
+                                           FontSize="11"
+                                           VerticalOptions="Center"/>
+
+                                    <!-- Duration -->
+                                    <Label Grid.Column="5" 
+                                           Text="{Binding DurationText}" 
+                                           TextColor="Gray"
+                                           FontSize="11"
+                                           VerticalOptions="Center"/>
+
+                                    <!-- Status Badge -->
+                                    <Frame Grid.Column="6"
+                                           BackgroundColor="{Binding StatusColor}"
+                                           CornerRadius="12"
+                                           Padding="8,4"
+                                           HasShadow="False"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center">
+                                        <Label Text="{Binding StatusText}" 
+                                               TextColor="White"
+                                               FontSize="10"
+                                               FontAttributes="Bold"/>
+                                    </Frame>
+
+                                    <!-- Separator Line -->
+                                    <BoxView Grid.ColumnSpan="7"
+                                            Color="#F0F0F0"
+                                            HeightRequest="1"
+                                            VerticalOptions="End"
+                                            HorizontalOptions="Fill"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+            </Grid>
+        </Frame>
+    </Grid>
+</ContentPage>

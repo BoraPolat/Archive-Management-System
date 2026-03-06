@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SoftwareDesign.MainPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#F2F2F7">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Arka plan resmi -->
+        <Image Source="gau_logo.png"
+               Aspect="AspectFit"
+               Opacity="0.85"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               Grid.RowSpan="4" />
+
+        <!-- Üst Bar - Settings Butonu için -->
+        <Frame Grid.Row="0"
+               Padding="15,0"
+               BackgroundColor="#000E38"
+               CornerRadius="0"
+               HasShadow="True"
+               Margin="0">
+
+            <Grid>
+                <Label Text="  Document Search"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start" />
+
+                <Button Text="⚙️"
+                        FontSize="22"
+                        WidthRequest="60"
+                        HeightRequest="40"
+                        CornerRadius="8"
+                        BackgroundColor="Transparent"
+                        TextColor="White"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        Clicked="OnSettingsClicked" />
+            </Grid>
+        </Frame>
+
+        <!-- ÜST KISIM: Dynamic Panel -->
+        <Frame Grid.Row="1"
+               Margin="40,30,40,10"
+               Padding="30"
+               BackgroundColor="#000E38"
+               CornerRadius="5"
+               HasShadow="True"
+               VerticalOptions="Start">
+
+            <StackLayout x:Name="DynamicFieldsContainer" Spacing="15">
+                <!-- File Type - Her zaman görünür -->
+                <Grid ColumnSpacing="15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackLayout Grid.Column="0">
+                        <Label Text="File Type" 
+                               FontSize="12" 
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Start" />
+                        <Picker x:Name="FileTypePicker"
+                                Title="Select File Type..."
+                                FontSize="12"
+                                BackgroundColor="White"
+                                TextColor="Black"
+                                SelectedIndexChanged="OnFileTypeSelected">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Midterms</x:String>
+                                    <x:String>Finals</x:String>
+                                    <x:String>Quiz1</x:String>
+                                    <x:String>Quiz2</x:String>
+                                    <x:String>Graduation_Projects</x:String>
+                                    <x:String>Summer_Training_Reports</x:String>
+                                    <x:String>Homeworks</x:String>
+                                    <x:String>Letters</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </StackLayout>
+                </Grid>
+
+                <!-- Dinamik alanlar buraya eklenecek -->
+                <Grid x:Name="DynamicGrid" 
+                      ColumnSpacing="15"
+                      RowSpacing="10"
+                      IsVisible="False">
+                </Grid>
+            </StackLayout>
+        </Frame>
+
+        <!-- ORTA KISIM: Arama Butonu -->
+        <Button 
+            x:Name="SearchButton"
+            Grid.Row="2"
+            Text="🔍 Search ..."
+            FontSize="15"
+            FontAttributes="Bold"
+            HeightRequest="50"
+            CornerRadius="5"
+            BackgroundColor="#000E38"
+            TextColor="White"
+            HorizontalOptions="Fill"
+            VerticalOptions="Start"
+            Margin="40,10,40,20"
+            IsEnabled="False"
+            Clicked="OnSearchClicked" />
+
+        <!-- ALT KISIM: Sol ve Sağ Butonlar -->
+        <Grid Grid.Row="3" 
+              Padding="40,0,40,40"
+              ColumnSpacing="20"
+              VerticalOptions="End">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button 
+                Grid.Column="0"
+                Text="📁 Add Files to Archive"
+                FontSize="14"
+                WidthRequest="180"
+                HeightRequest="50"
+                CornerRadius="5"
+                BackgroundColor="#34C759"
+                TextColor="White"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"
+                Clicked="OnAddToArchiveClicked" />
+
+            <Button 
+                Grid.Column="1"
+                Text="🗺️ Guide"
+                FontSize="14"
+                WidthRequest="180"
+                HeightRequest="50"
+                CornerRadius="5"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Clicked="OnArchiveMapClicked" />
+
+            <Button 
+                Grid.Column="2"
+                Text="📚 Borrowed Files"
+                FontSize="14"
+                WidthRequest="180"
+                HeightRequest="50"
+                CornerRadius="5"
+                BackgroundColor="#FF9500"
+                TextColor="White"
+                HorizontalOptions="End"
+                VerticalOptions="Center"
+                Clicked="OnBorrowedFilesClicked" />
+        </Grid>
+    </Grid>
+</ContentPage>

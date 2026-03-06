@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SoftwareDesign.LoginPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#F2F2F7">
+    <Grid>
+        <!-- Arka plan resmi -->
+        <Image Source="gau_logo.png"
+               Aspect="AspectFit"
+               Opacity="0.85"
+               VerticalOptions="Center"
+               HorizontalOptions="Center" />
+
+        <!-- Login Form -->
+        <Frame Margin="40"
+               Padding="40"
+               BackgroundColor="#000E38"
+               CornerRadius="10"
+               HasShadow="True"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               WidthRequest="400">
+            <Frame.Shadow>
+                <Shadow Brush="Black"
+                        Opacity="0.3"
+                        Radius="30"
+                        Offset="0,10" />
+            </Frame.Shadow>
+
+            <StackLayout Spacing="25">
+                <!-- Logo veya Başlık -->
+                <Label Text="🔐 GAU Archive System"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       Margin="0,0,0,20" />
+
+                <!-- Username -->
+                <StackLayout Spacing="8">
+                    <Label Text="Username"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <Entry x:Name="UsernameEntry"
+                           Placeholder="Enter username"
+                           PlaceholderColor="#999999"
+                           TextColor="Black"
+                           BackgroundColor="White"
+                           HeightRequest="45"
+                           FontSize="14"
+                           Completed="OnUsernameCompleted" />
+                </StackLayout>
+
+                <!-- Password -->
+                <StackLayout Spacing="8">
+                    <Label Text="Password"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    <Entry x:Name="PasswordEntry"
+                           Placeholder="Enter password"
+                           PlaceholderColor="#999999"
+                           TextColor="Black"
+                           BackgroundColor="White"
+                           IsPassword="True"
+                           HeightRequest="45"
+                           FontSize="14"
+                           Completed="OnPasswordCompleted" />
+                </StackLayout>
+
+                <!-- Error Message -->
+                <Label x:Name="ErrorLabel"
+                       TextColor="#FF3B30"
+                       FontSize="12"
+                       IsVisible="False"
+                       HorizontalOptions="Center" />
+
+                <!-- Login Button -->
+                <Button x:Name="LoginButton"
+                        Text="Login"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        HeightRequest="50"
+                        CornerRadius="10"
+                        BackgroundColor="#34C759"
+                        TextColor="White"
+                        Margin="0,10,0,0"
+                        Clicked="OnLoginClicked">
+                    <Button.Shadow>
+                        <Shadow Brush="Black"
+                                Opacity="0.3"
+                                Radius="10"
+                                Offset="0,5" />
+                    </Button.Shadow>
+                </Button>
+
+                <!-- Info Text -->
+                <Label Text="Default credentials: GAU / GAU"
+                       FontSize="11"
+                       TextColor="#999999"
+                       HorizontalOptions="Center"
+                       Margin="0,10,0,0" />
+            </StackLayout>
+        </Frame>
+    </Grid>
+</ContentPage>

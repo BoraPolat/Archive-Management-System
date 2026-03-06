@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SoftwareDesign.AddDocumentTypePopup"
+             BackgroundColor="#F2F2F7">
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="40,30,40,30" RowSpacing="15">
+
+        <!-- Arka plan logo -->
+        <Image Source="gau_logo.png"
+               Aspect="AspectFit"
+               Opacity="0.3"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               Grid.RowSpan="3" />
+
+        <!-- Header -->
+        <Frame Grid.Row="0"
+               Padding="20"
+               BackgroundColor="#000E38"
+               CornerRadius="5"
+               HasShadow="True">
+            <Frame.Shadow>
+                <Shadow Brush="Black" Opacity="0.15" Radius="20" Offset="0,8" />
+            </Frame.Shadow>
+            <Label x:Name="PageTitle"
+                   Text="➕ Add New Document Type" 
+                   FontSize="20" 
+                   FontAttributes="Bold" 
+                   TextColor="White" 
+                   HorizontalOptions="Center"/>
+        </Frame>
+
+        <!-- Form Content -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="15">
+
+                <!-- Type Name -->
+                <Frame BackgroundColor="White" CornerRadius="5" Padding="15" HasShadow="True">
+                    <Frame.Shadow>
+                        <Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,3" />
+                    </Frame.Shadow>
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Document Type Name *" 
+                               FontSize="13" 
+                               FontAttributes="Bold" 
+                               TextColor="#000E38"/>
+                        <Entry x:Name="TypeNameEntry"
+                               Placeholder="e.g., Internship Reports"
+                               PlaceholderColor="#95A5A6"
+                               TextColor="#000000"
+                               BackgroundColor="#F8F9FA"
+                               TextChanged="OnTypeNameChanged"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Description -->
+                <Frame BackgroundColor="White" CornerRadius="5" Padding="15" HasShadow="True">
+                    <Frame.Shadow>
+                        <Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,3" />
+                    </Frame.Shadow>
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Description (Optional)" 
+                               FontSize="13" 
+                               FontAttributes="Bold" 
+                               TextColor="#000E38"/>
+                        <Entry x:Name="DescriptionEntry"
+                               Placeholder="Brief description of this document type"
+                               PlaceholderColor="#95A5A6"
+                               TextColor="#000000"
+                               BackgroundColor="#F8F9FA"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Fields Selection -->
+                <Frame BackgroundColor="White" CornerRadius="5" Padding="15" HasShadow="True">
+                    <Frame.Shadow>
+                        <Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,3" />
+                    </Frame.Shadow>
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                            <Label Grid.Column="0"
+                                   Text="Select Required Fields *" 
+                                   FontSize="13" 
+                                   FontAttributes="Bold" 
+                                   TextColor="#000E38"
+                                   VerticalOptions="Center"/>
+                            <Button Grid.Column="1"
+                                    Text="📋 Manage Document Types"
+                                    BackgroundColor="#FF9500"
+                                    TextColor="White"
+                                    FontSize="10"
+                                    HeightRequest="32"
+                                    CornerRadius="5"
+                                    Clicked="OnManageDocumentTypesClicked"/>
+                            <Button Grid.Column="2"
+                                    Text="⚙️ Manage Fields"
+                                    BackgroundColor="#007AFF"
+                                    TextColor="White"
+                                    FontSize="10"
+                                    HeightRequest="32"
+                                    CornerRadius="5"
+                                    Clicked="OnManageFieldsClicked"/>
+                        </Grid>
+
+                        <CollectionView x:Name="AvailableFieldsCollectionView"
+                                        SelectionMode="None"
+                                        MaximumHeightRequest="300">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame BackgroundColor="#F8F9FA" 
+                                           CornerRadius="4" 
+                                           Padding="10" 
+                                           Margin="0,2"
+                                           BorderColor="#E0E0E0">
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                            <CheckBox Grid.Column="0"
+                                                      Color="#34C759"
+                                                      VerticalOptions="Center"
+                                                      CheckedChanged="OnFieldSelectionChanged"/>
+                                            <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                                <Label Text="{Binding Display_Name}" 
+                                                       FontSize="13" 
+                                                       FontAttributes="Bold"
+                                                       TextColor="#000E38"/>
+                                                <Label Text="{Binding Field_Type}" 
+                                                       FontSize="10" 
+                                                       TextColor="#7F8C8D"/>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <!-- Selected Fields Summary -->
+                        <Frame BackgroundColor="#E8F5E9" CornerRadius="4" Padding="12" BorderColor="#34C759">
+                            <VerticalStackLayout Spacing="5">
+                                <Label Text="✅ Selected Fields:" 
+                                       FontSize="11" 
+                                       FontAttributes="Bold" 
+                                       TextColor="#2E7D32"/>
+                                <Label x:Name="SelectedFieldsLabel"
+                                       Text="No fields selected" 
+                                       FontSize="11" 
+                                       TextColor="#000000"
+                                       LineBreakMode="WordWrap"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Action Buttons -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="15">
+            <Button Grid.Column="0"
+                    x:Name="SaveButton"
+                    Text="💾 Save" 
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    HeightRequest="45"
+                    BackgroundColor="#34C759" 
+                    TextColor="White" 
+                    CornerRadius="5"
+                    IsEnabled="False"
+                    Clicked="OnSaveClicked"
+                    Shadow="{Shadow Brush=Black, Opacity=0.2, Radius=5, Offset='0,3'}"/>
+            <Button Grid.Column="1"
+                    Text="❌ Cancel" 
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    HeightRequest="45"
+                    BackgroundColor="#95A5A6" 
+                    TextColor="White" 
+                    CornerRadius="5"
+                    Clicked="OnCancelClicked"
+                    Shadow="{Shadow Brush=Black, Opacity=0.2, Radius=5, Offset='0,3'}"/>
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

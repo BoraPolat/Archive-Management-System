@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SoftwareDesign.SettingsPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#F2F2F7">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header Bar -->
+        <Frame Grid.Row="0"
+               Padding="20,0"
+               BackgroundColor="#000E38"
+               CornerRadius="0"
+               HasShadow="True">
+            <Grid>
+                <!-- Back Button -->
+                <Button Text="← Back"
+                        FontSize="14"
+                        WidthRequest="80"
+                        HeightRequest="35"
+                        CornerRadius="8"
+                        BackgroundColor="Transparent"
+                        TextColor="White"
+                        BorderColor="White"
+                        BorderWidth="1"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center"
+                        Clicked="OnBackClicked" />
+
+                <!-- Title -->
+                <Label Text="⚙️ Settings"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center" />
+
+                <!-- Logout Button -->
+                <Button Text="Logout"
+                        FontSize="12"
+                        WidthRequest="70"
+                        HeightRequest="32"
+                        CornerRadius="6"
+                        BackgroundColor="#FF3B30"
+                        TextColor="White"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        Clicked="OnLogoutClicked" />
+            </Grid>
+        </Frame>
+
+        <!-- Content -->
+        <ScrollView Grid.Row="1">
+            <StackLayout Padding="20" Spacing="15">
+
+                <!-- User Info Card -->
+                <Frame Padding="15"
+                       BackgroundColor="White"
+                       CornerRadius="8"
+                       HasShadow="False"
+                       BorderColor="#E0E0E0">
+                    <Grid ColumnSpacing="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- User Icon -->
+                        <Frame Grid.Column="0"
+                               Padding="0"
+                               WidthRequest="45"
+                               HeightRequest="45"
+                               CornerRadius="22.5"
+                               BackgroundColor="#000E38"
+                               HasShadow="False"
+                               VerticalOptions="Center">
+                            <Label Text="👤"
+                                   FontSize="24"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Frame>
+
+                        <!-- User Info -->
+                        <StackLayout Grid.Column="1"
+                                     Spacing="2"
+                                     VerticalOptions="Center">
+                            <Label Text="Current User"
+                                   FontSize="11"
+                                   TextColor="#666666" />
+                            <Label x:Name="CurrentUsernameLabel"
+                                   Text="Loading..."
+                                   FontSize="16"
+                                   TextColor="#000E38"
+                                   FontAttributes="Bold" />
+                        </StackLayout>
+                    </Grid>
+                </Frame>
+
+                <!-- Account Settings Section -->
+                <Label Text="ACCOUNT"
+                       FontSize="11"
+                       FontAttributes="Bold"
+                       TextColor="#666666"
+                       Margin="5,10,0,0" />
+
+                <Frame Padding="0"
+                       BackgroundColor="White"
+                       CornerRadius="8"
+                       HasShadow="False"
+                       BorderColor="#E0E0E0">
+                    <StackLayout Spacing="0">
+
+                        <!-- Change Username -->
+                        <Grid Padding="15,12"
+                              ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnChangeUsernameClicked" />
+                            </Grid.GestureRecognizers>
+
+                            <Label Grid.Column="0"
+                                   Text="👤"
+                                   FontSize="18"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="Change Username"
+                                   FontSize="14"
+                                   TextColor="#000000"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="2"
+                                   Text="›"
+                                   FontSize="20"
+                                   TextColor="#C7C7CC"
+                                   VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="0.5"
+                                 BackgroundColor="#E0E0E0"
+                                 Margin="15,0" />
+
+                        <!-- Change Password -->
+                        <Grid Padding="15,12"
+                              ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnChangePasswordClicked" />
+                            </Grid.GestureRecognizers>
+
+                            <Label Grid.Column="0"
+                                   Text="🔒"
+                                   FontSize="18"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="Change Password"
+                                   FontSize="14"
+                                   TextColor="#000000"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="2"
+                                   Text="›"
+                                   FontSize="20"
+                                   TextColor="#C7C7CC"
+                                   VerticalOptions="Center" />
+                        </Grid>
+
+                    </StackLayout>
+                </Frame>
+
+                <!-- System Section -->
+                <Label Text="SYSTEM"
+                       FontSize="11"
+                       FontAttributes="Bold"
+                       TextColor="#666666"
+                       Margin="5,15,0,0" />
+
+                <Frame Padding="0"
+                       BackgroundColor="White"
+                       CornerRadius="8"
+                       HasShadow="False"
+                       BorderColor="#E0E0E0">
+                    <StackLayout Spacing="0">
+
+                        <Grid Padding="15,5" ColumnSpacing="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Entry x:Name="DbPathEntry"
+           Grid.Column="0"
+           Placeholder="Select DB path..."
+           FontSize="12"
+           TextColor="Black"
+           VerticalOptions="Center" />
+
+                            <Button Grid.Column="1"
+            Text="Choose"
+            FontSize="11"
+            HeightRequest="35"
+            CornerRadius="5"
+            Padding="10,0"
+            BackgroundColor="#007AFF"
+            TextColor="White"
+            Clicked="OnChoosePathClicked" />
+
+                            <Button Grid.Column="2"
+            Text="Default"
+            FontSize="11"
+            HeightRequest="35"
+            CornerRadius="5"
+            Padding="10,0"
+            BackgroundColor="#FF9500" 
+            TextColor="White"
+            Clicked="OnResetPathClicked" />
+
+                            <Button Grid.Column="3"
+            Text="Set"
+            FontSize="11"
+            HeightRequest="35"
+            CornerRadius="5"
+            Padding="10,0"
+            BackgroundColor="#34C759"
+            TextColor="White"
+            Clicked="OnSetPathClicked" />
+                        </Grid>
+
+                        <BoxView HeightRequest="0.5" BackgroundColor="#E0E0E0" Margin="15,0" />
+
+                        <!-- 🆕 MANAGE DATABASE (YENİ EKLENEN) -->
+                        <Grid Padding="15,12"
+                              ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnManageDatabaseClicked" />
+                            </Grid.GestureRecognizers>
+
+                            <Label Grid.Column="0"
+                                   Text="🗄️"
+                                   FontSize="18"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="Manage Database"
+                                   FontSize="14"
+                                   TextColor="#000000"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="2"
+                                   Text="›"
+                                   FontSize="20"
+                                   TextColor="#C7C7CC"
+                                   VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="0.5" BackgroundColor="#E0E0E0" Margin="15,0" />
+
+                        <Grid Padding="15,12" ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnPopulateLocationsClicked" />
+                            </Grid.GestureRecognizers>
+
+                            <Label Grid.Column="0" Text="🏷️" FontSize="18" VerticalOptions="Center" />
+                            <Label Grid.Column="1" Text="Populate Locations" FontSize="14" TextColor="#000000" VerticalOptions="Center" />
+                            <Label Grid.Column="2" Text="›" FontSize="20" TextColor="#C7C7CC" VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="0.5"
+                                 BackgroundColor="#E0E0E0"
+                                 Margin="15,0" />
+
+                        <!-- About -->
+                        <Grid Padding="15,12"
+                              ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnAboutClicked" />
+                            </Grid.GestureRecognizers>
+
+                            <Label Grid.Column="0"
+                                   Text="ℹ️"
+                                   FontSize="18"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="About"
+                                   FontSize="14"
+                                   TextColor="#000000"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="2"
+                                   Text="›"
+                                   FontSize="20"
+                                   TextColor="#C7C7CC"
+                                   VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="0.5"
+                                 BackgroundColor="#E0E0E0"
+                                 Margin="15,0" />
+
+                        <!-- Reset to Default -->
+                        <Grid Padding="15,12"
+                              ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnResetToDefaultClicked" />
+                            </Grid.GestureRecognizers>
+
+                            <Label Grid.Column="0"
+                                   Text="⚠️"
+                                   FontSize="18"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="1"
+                                   Text="Reset to Default"
+                                   FontSize="14"
+                                   TextColor="#FF3B30"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="2"
+                                   Text="›"
+                                   FontSize="20"
+                                   TextColor="#C7C7CC"
+                                   VerticalOptions="Center" />
+                        </Grid>
+
+                    </StackLayout>
+                </Frame>
+
+                <!-- Version Info -->
+                <Label Text="GAU Archive Management v1.0"
+                       FontSize="11"
+                       TextColor="#999999"
+                       HorizontalOptions="Center"
+                       Margin="0,20,0,10" />
+
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

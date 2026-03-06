@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SoftwareDesign"
+             x:Class="SoftwareDesign.ManageDocumentTypesPage"
+             Title="Manage Document Types"
+             BackgroundColor="#F2F2F7">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:InverseBoolConverter x:Key="InvertBoolConverter"/>
+            <local:JsonFieldsConverter x:Key="JsonFieldsConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+
+        <!-- Arka plan logo -->
+        <Image Source="gau_logo.png"
+               Aspect="AspectFit"
+               Opacity="0.3"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               Grid.RowSpan="4" />
+
+        <!-- Header -->
+        <Frame Grid.Row="0"
+               Margin="40,30,40,10"
+               Padding="20"
+               BackgroundColor="#000E38"
+               CornerRadius="5"
+               HasShadow="True">
+            <Frame.Shadow>
+                <Shadow Brush="Black" Opacity="0.15" Radius="20" Offset="0,8" />
+            </Frame.Shadow>
+
+            <Grid ColumnSpacing="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackLayout Grid.Column="0" Spacing="5">
+                    <Label Text="📋 Document Type Management" 
+                           FontSize="20" 
+                           FontAttributes="Bold" 
+                           TextColor="White"/>
+                    <Label Text="Manage types, fields, and descriptions"
+                           FontSize="12"
+                           TextColor="#BDC3C7" />
+                </StackLayout>
+
+                <Grid Grid.Column="1" ColumnDefinitions="Auto,Auto,Auto" ColumnSpacing="10">
+                    <Frame Grid.Column="0" Padding="12,8" BackgroundColor="#34C759" CornerRadius="6" HasShadow="False">
+                        <StackLayout Spacing="1">
+                            <Label Text="Total" FontSize="9" TextColor="White" HorizontalOptions="Center"/>
+                            <Label x:Name="TotalTypesLabel" Text="0" FontSize="16" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Grid.Column="1" Padding="12,8" BackgroundColor="#007AFF" CornerRadius="6" HasShadow="False">
+                        <StackLayout Spacing="1">
+                            <Label Text="System" FontSize="9" TextColor="White" HorizontalOptions="Center"/>
+                            <Label x:Name="SystemTypesLabel" Text="0" FontSize="16" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Grid.Column="2" Padding="12,8" BackgroundColor="#FF9500" CornerRadius="6" HasShadow="False">
+                        <StackLayout Spacing="1">
+                            <Label Text="Custom" FontSize="9" TextColor="White" HorizontalOptions="Center"/>
+                            <Label x:Name="CustomTypesLabel" Text="0" FontSize="16" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+            </Grid>
+        </Frame>
+
+        <!-- Add New Button -->
+        <Button Grid.Row="1"
+                Margin="40,0,40,10"
+                Text="➕ Add New Document Type" 
+                FontSize="14"
+                FontAttributes="Bold"
+                HeightRequest="45"
+                CornerRadius="5"
+                BackgroundColor="#34C759"
+                TextColor="White"
+                Clicked="OnAddNewTypeClicked"
+                Shadow="{Shadow Brush=Black, Opacity=0.2, Radius=5, Offset='0,3'}"/>
+
+        <!-- Document Types List - KOMPAKT & BEYAZ -->
+        <Frame Grid.Row="2"
+               Margin="40,0,40,10"
+               Padding="5"
+               BackgroundColor="White"
+               CornerRadius="5"
+               HasShadow="True">
+            <Frame.Shadow>
+                <Shadow Brush="Black" Opacity="0.1" Radius="15" Offset="0,5" />
+            </Frame.Shadow>
+
+            <ScrollView>
+                <CollectionView x:Name="DocumentTypesCollectionView" 
+                                SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <!-- KOMPAKT BEYAZ SATIR -->
+                            <Frame Margin="2,1"
+                                   Padding="10,8"
+                                   BackgroundColor="#F8F9FA"
+                                   CornerRadius="3"
+                                   HasShadow="False"
+                                   BorderColor="#E0E0E0">
+                                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+
+                                    <!-- Bilgiler -->
+                                    <StackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                                        <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="8">
+                                            <Label Grid.Column="0"
+                                                   Text="{Binding Type_Name}" 
+                                                   FontSize="13" 
+                                                   FontAttributes="Bold" 
+                                                   TextColor="#000E38"
+                                                   VerticalOptions="Center"/>
+                                            <Frame Grid.Column="1"
+                                                   Padding="5,2"
+                                                   BackgroundColor="#007AFF"
+                                                   CornerRadius="3"
+                                                   HasShadow="False"
+                                                   IsVisible="{Binding Is_System_Type}"
+                                                   VerticalOptions="Center">
+                                                <Label Text="SYSTEM" 
+                                                       FontSize="8" 
+                                                       FontAttributes="Bold" 
+                                                       TextColor="White"/>
+                                            </Frame>
+                                        </Grid>
+                                        <Label Text="{Binding Description}" 
+                                               FontSize="10" 
+                                               TextColor="#7F8C8D"
+                                               LineBreakMode="TailTruncation"/>
+                                        <Label Text="{Binding Required_Fields_Json, Converter={StaticResource JsonFieldsConverter}}" 
+                                               FontSize="9" 
+                                               TextColor="#95A5A6"
+                                               LineBreakMode="TailTruncation"/>
+                                    </StackLayout>
+
+                                    <BoxView Grid.Column="1" WidthRequest="1" BackgroundColor="#E0E0E0" Margin="5,0"/>
+
+                                    <!-- Action Buttons - KOMPAKT (3 buton: View, Edit, Delete) -->
+                                    <Grid Grid.Column="2" ColumnDefinitions="Auto,Auto,Auto" ColumnSpacing="5">
+                                        <!-- View Documents -->
+                                        <Button Grid.Column="0"
+                                                Text="📄"
+                                                FontSize="14"
+                                                WidthRequest="32"
+                                                HeightRequest="32"
+                                                CornerRadius="4"
+                                                Padding="0"
+                                                BackgroundColor="#007AFF"
+                                                TextColor="White"
+                                                BindingContext="{Binding}"
+                                                Clicked="OnViewDocumentsClicked"/>
+
+                                        <!-- Edit Type -->
+                                        <Button Grid.Column="1"
+                                                Text="✏️"
+                                                FontSize="14"
+                                                WidthRequest="32"
+                                                HeightRequest="32"
+                                                CornerRadius="4"
+                                                Padding="0"
+                                                BackgroundColor="#FF9500"
+                                                TextColor="White"
+                                                BindingContext="{Binding}"
+                                                Clicked="OnEditTypeClicked"/>
+
+                                        <!-- Delete Type (System type'larda disabled) -->
+                                        <Button Grid.Column="2"
+                                                Text="🗑️"
+                                                FontSize="14"
+                                                WidthRequest="32"
+                                                HeightRequest="32"
+                                                CornerRadius="4"
+                                                Padding="0"
+                                                TextColor="White"
+                                                BindingContext="{Binding}"
+                                                Clicked="OnDeleteTypeClicked">
+                                            <Button.Triggers>
+                                                <DataTrigger TargetType="Button" Binding="{Binding Is_System_Type}" Value="True">
+                                                    <Setter Property="BackgroundColor" Value="#95A5A6"/>
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Button" Binding="{Binding Is_System_Type}" Value="False">
+                                                    <Setter Property="BackgroundColor" Value="#E74C3C"/>
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                </DataTrigger>
+                                            </Button.Triggers>
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </Frame>
+
+        <!-- Close Button -->
+        <Button Grid.Row="3"
+                Margin="40,0,40,30"
+                Text="❌ Close" 
+                FontSize="14"
+                FontAttributes="Bold"
+                HeightRequest="45"
+                CornerRadius="5"
+                BackgroundColor="#95A5A6"
+                TextColor="White"
+                Clicked="OnCloseClicked"
+                Shadow="{Shadow Brush=Black, Opacity=0.2, Radius=5, Offset='0,3'}"/>
+
+    </Grid>
+
+</ContentPage>

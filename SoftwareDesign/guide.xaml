@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SoftwareDesign.LocationGuidePage"
+             Title="Location Guide"
+             BackgroundColor="#F2F2F7">
+
+    <Grid RowDefinitions="Auto, *">
+        
+        <Frame Grid.Row="0" 
+               Padding="15" 
+               BackgroundColor="#000E38" 
+               CornerRadius="0" 
+               HasShadow="False" 
+               BorderColor="Transparent">
+            <Grid>
+                <Button Text="← Back"
+                        HorizontalOptions="Start"
+                        TextColor="White"
+                        BackgroundColor="Transparent"
+                        Clicked="OnBackClicked"/>
+
+                <Label Text="ℹ️ Guide"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+            </Grid>
+        </Frame>
+
+        <Grid Grid.Row="1" ColumnDefinitions="2.5*, *" Padding="0" ColumnSpacing="0">
+
+            <Frame Grid.Column="0"
+                   Padding="5"
+                   BackgroundColor="White"
+                   CornerRadius="0"
+                   BorderColor="#E0E0E0"
+                   HasShadow="False"
+                   VerticalOptions="Fill"
+                   HorizontalOptions="Fill">
+                
+                <Image Source="shelf_guide.jpeg"
+                       Aspect="AspectFit"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"/>
+            </Frame>
+
+            <Frame Grid.Column="1"
+                   Padding="10,15,10,15" 
+                   BackgroundColor="#F2F2F7" 
+                   CornerRadius="0"
+                   BorderColor="#E0E0E0"
+                   HasShadow="False"
+                   VerticalOptions="Fill">
+                
+                <ScrollView VerticalScrollBarVisibility="Always">
+                    <VerticalStackLayout Spacing="15">
+
+                        <Label Text="HOW TO FIND" 
+                               FontAttributes="Bold" 
+                               FontSize="21" 
+                               TextColor="#000E38"
+                               HorizontalOptions="Start"/>
+
+                        <Label Text="Ex: 1R - 2C"
+                               TextColor="#34C759" 
+                               FontAttributes="Bold"
+                               FontSize="21"
+                               HorizontalOptions="Start"/> 
+
+                        <BoxView HeightRequest="1" Color="#CCCCCC" Margin="0,0,0,5"/>
+
+                        <VerticalStackLayout>
+                            <Label Text="• 1 (STAND):" FontAttributes="Bold" TextColor="Black" FontSize="20"/>
+                            <Label Text="Find the large number on the top frame." 
+                                   TextColor="#333333" 
+                                   FontSize="16"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout>
+                            <Label Text="• R (SIDE):" FontAttributes="Bold" TextColor="Black" FontSize="20"/>
+                            <Label Text="Either the left-hand or right-hand side of the stand." 
+                                   TextColor="#333333" 
+                                   FontSize="16"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout>
+                            <Label Text="• 2 (SHELF):" FontAttributes="Bold" TextColor="Black" FontSize="20"/>
+                            <Label Text="Count shelves UP from the bottom (Floor=1)." 
+                                   TextColor="#333333" 
+                                   FontSize="16"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout>
+                            <Label Text="• C (SECTION):" FontAttributes="Bold" TextColor="Black" FontSize="20"/>
+                            <Label Text="Look from LEFT to RIGHT (A → B → C → D)." 
+                                   TextColor="#333333" 
+                                   FontSize="16"/>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Frame>
+
+        </Grid>
+    </Grid>
+</ContentPage>

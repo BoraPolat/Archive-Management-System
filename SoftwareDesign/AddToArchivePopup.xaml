@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SoftwareDesign.AddToArchivePopup"
+             Title="Add to Archive"
+             BackgroundColor="#F2F2F7">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Arka plan için logo (isteğe bağlı) -->
+        <Image Source="gau_logo.png"
+               Aspect="AspectFit"
+               Opacity="1"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               Grid.RowSpan="3" />
+
+        <!-- ÜST KISIM: File Type ve Dinamik Alanlar -->
+        <Frame Grid.Row="0"
+               Margin="40,30,40,10"
+               Padding="30"
+               BackgroundColor="#000E38"
+               CornerRadius="5"
+               HasShadow="True"
+               VerticalOptions="Start">
+            <Frame.Shadow>
+                <Shadow Brush="Black"
+                        Opacity="0.15"
+                        Radius="20"
+                        Offset="0,8" />
+            </Frame.Shadow>
+
+            <StackLayout Spacing="20">
+                <!-- Başlık -->
+                <Label Text="📁 Add Files to Archive"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       Margin="0,0,0,10" />
+
+                <!-- File Type + Create New Button -->
+                <Grid RowSpacing="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Label -->
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                           Text="File Type *"
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Start" />
+
+                    <!-- Picker -->
+                    <Picker Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                            x:Name="FileTypePickerPopup"
+                            Title="Select File Type..."
+                            FontSize="12"
+                            BackgroundColor="White"
+                            TextColor="Black"
+                            SelectedIndexChanged="OnFileTypeSelectedPopup" />
+
+                    <!-- Create New Type Button -->
+                    <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+							Text="➕ Configure Document/Field Types"
+							FontSize="11"
+							BackgroundColor="#f59e0b"
+							TextColor="White"
+							CornerRadius="5"
+							HeightRequest="20"
+							Margin="0,5,0,0"
+							Clicked="OnCreateNewTypeClicked" />
+                </Grid>
+
+                <!-- Dinamik Alanlar - Compact Grid -->
+                <Grid x:Name="DynamicGrid"
+                      ColumnSpacing="15"
+                      RowSpacing="10"
+                      IsVisible="False">
+                    <!-- Dinamik olarak doldurulacak -->
+                </Grid>
+            </StackLayout>
+        </Frame>
+
+        <!-- ORTA KISIM: Kaydet Butonu -->
+        <Button
+            Grid.Row="1"
+            x:Name="SaveButton"
+            Text="💾 Save to Archive"
+            FontSize="12"
+            FontAttributes="Bold"
+            HeightRequest="40"
+            CornerRadius="5"
+            BackgroundColor="#00C853"
+            TextColor="White"
+            HorizontalOptions="Fill"
+            VerticalOptions="Start"
+            Margin="40,10,40,20"
+            IsEnabled="False"
+            Clicked="OnSaveClicked"
+            Shadow="{Shadow Brush=Black, Opacity=0.3, Radius=10, Offset='0,5'}" />
+
+        <!-- ALT KISIM: Cancel Butonu -->
+        <Grid Grid.Row="2"
+              Padding="30">
+            <Button
+                Text="✕ Cancel"
+                FontSize="14"
+                WidthRequest="150"
+                HeightRequest="45"
+                CornerRadius="5"
+                BackgroundColor="#FF3B30"
+                TextColor="White"
+                HorizontalOptions="Center"
+                VerticalOptions="End"
+                Clicked="OnCancelClicked"
+                Shadow="{Shadow Brush=Black, Opacity=0.2, Radius=5, Offset='0,3'}" />
+        </Grid>
+    </Grid>
+</ContentPage>

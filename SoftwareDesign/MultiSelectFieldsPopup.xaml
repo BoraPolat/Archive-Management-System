@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SoftwareDesign.MultiSelectFieldsPopup"
+             Title="Select Required Fields"
+             BackgroundColor="#F2F2F7">
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="20" RowSpacing="15">
+
+        <Frame Grid.Row="0" 
+               BackgroundColor="#000E38" 
+               CornerRadius="10" 
+               Padding="15"
+               HasShadow="True">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="📋 Select Required Fields" 
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       TextColor="White" 
+                       HorizontalOptions="Center"/>
+                <Label Text="Check the fields that are required for this document type" 
+                       FontSize="12" 
+                       TextColor="#CCCCCC" 
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Frame>
+
+        <ScrollView Grid.Row="1">
+            <CollectionView x:Name="FieldsCollectionView" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="White" 
+                               CornerRadius="8" 
+                               Padding="15" 
+                               Margin="0,5"
+                               BorderColor="#E0E0E0"
+                               HasShadow="False">
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                                <CheckBox Grid.Column="0"
+                                          IsChecked="{Binding IsSelected}"
+                                          Color="#34C759"
+                                          VerticalOptions="Center"/>
+                                <Label Grid.Column="1"
+                                       Text="{Binding FieldName}" 
+                                       FontSize="15" 
+                                       TextColor="#000000"
+                                       VerticalOptions="Center"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+
+        <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="10">
+            <Button Grid.Column="0"
+                    Text="✅ Save" 
+                    BackgroundColor="#34C759" 
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    CornerRadius="8"
+                    Clicked="OnSaveClicked"/>
+            <Button Grid.Column="1"
+                    Text="❌ Cancel" 
+                    BackgroundColor="#8E8E93" 
+                    TextColor="White"
+                    CornerRadius="8"
+                    Clicked="OnCancelClicked"/>
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

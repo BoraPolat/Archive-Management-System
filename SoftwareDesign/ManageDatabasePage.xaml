@@ -1,0 +1,419 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SoftwareDesign"
+             x:Class="SoftwareDesign.ManageDatabasePage"
+             Title="Database Management"
+             BackgroundColor="#F2F2F7">
+
+    <ContentPage.Resources>
+        <local:BoolToBackgroundConverter x:Key="BoolToBackgroundConverter"/>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="10">
+
+        <!-- Arka plan logo -->
+        <Image Source="gau_logo.png"
+               Aspect="AspectFit"
+               Opacity="0.3"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               Grid.RowSpan="4" />
+
+        <!-- Header - MainPage Renkleri (#000E38) -->
+        <Frame Grid.Row="0"
+               Margin="40,30,40,10"
+               Padding="20,15"
+               BackgroundColor="#000E38"
+               CornerRadius="8"
+               HasShadow="True">
+            <Frame.Shadow>
+                <Shadow Brush="Black" Opacity="0.2" Radius="20" Offset="0,8" />
+            </Frame.Shadow>
+
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="12">
+                <StackLayout Grid.Column="0" Spacing="4" VerticalOptions="Center">
+                    <Label Text="📊 Database Management"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="White"/>
+                    <Label Text="Search, filter and manage your archive records"
+                           FontSize="11"
+                           TextColor="#BDC3C7" />
+                </StackLayout>
+
+                <!-- Modern Stats Badges - MainPage Renkleri -->
+                <Frame Grid.Column="1" BackgroundColor="#34C759" CornerRadius="8" 
+                       Padding="12,8" HasShadow="True" BorderColor="Transparent">
+                    <Frame.Shadow>
+                        <Shadow Brush="#34C759" Opacity="0.3" Radius="10" Offset="0,3" />
+                    </Frame.Shadow>
+                    <HorizontalStackLayout Spacing="6">
+                        <Label Text="📁 Database" FontSize="12" VerticalOptions="Center"/>
+                        <Label x:Name="TotalRecordsLabel" Text="0" FontSize="15" FontAttributes="Bold" 
+                               TextColor="White" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <Frame Grid.Column="2" BackgroundColor="#FF9500" CornerRadius="8" 
+                       Padding="12,8" HasShadow="True" BorderColor="Transparent">
+                    <Frame.Shadow>
+                        <Shadow Brush="#FF9500" Opacity="0.3" Radius="10" Offset="0,3" />
+                    </Frame.Shadow>
+                    <HorizontalStackLayout Spacing="6">
+                        <Label Text="✓ Selected" FontSize="12" VerticalOptions="Center" TextColor="White" FontAttributes="Bold"/>
+                        <Label x:Name="SelectedCountLabel" Text="0" FontSize="15" FontAttributes="Bold" 
+                               TextColor="White" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <Frame Grid.Column="3" BackgroundColor="#007AFF" CornerRadius="8" 
+                       Padding="12,8" HasShadow="True" BorderColor="Transparent">
+                    <Frame.Shadow>
+                        <Shadow Brush="#007AFF" Opacity="0.3" Radius="10" Offset="0,3" />
+                    </Frame.Shadow>
+                    <HorizontalStackLayout Spacing="6">
+                        <Label Text="📤 Borrowed" FontSize="12" VerticalOptions="Center"/>
+                        <Label x:Name="BorrowedCountLabel" Text="0" FontSize="15" FontAttributes="Bold" 
+                               TextColor="White" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </Frame>
+            </Grid>
+        </Frame>
+
+        <Frame Grid.Row="1"
+               Margin="40,0,40,10"
+               Padding="12"
+               BackgroundColor="White"
+               CornerRadius="8"
+               HasShadow="True">
+            <Frame.Shadow>
+                <Shadow Brush="Black" Opacity="0.1" Radius="15" Offset="0,4" />
+            </Frame.Shadow>
+
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="10">
+                <Frame Grid.Column="0" 
+                       BackgroundColor="#F8F9FA"
+                       CornerRadius="6"
+                       Padding="12,8"
+                       HasShadow="False"
+                       BorderColor="Transparent">
+
+                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="10">
+                        <Label Grid.Column="0" 
+                               Text="🔍" 
+                               FontSize="18" 
+                               VerticalOptions="Center" 
+                               TextColor="#6C757D"/>
+
+                        <Entry Grid.Column="1"
+                               x:Name="SearchEntry"
+                               Placeholder="Search records..."
+                               TextChanged="OnSearchTextChanged"
+                               FontSize="13"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Fill" 
+                               BackgroundColor="Transparent"
+                               PlaceholderColor="#6C757D"
+                               TextColor="#212529"/>
+                    </Grid>
+                </Frame>
+
+                <Button Grid.Column="1"
+                        Text="🔍"
+                        FontSize="16"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        CornerRadius="8"
+                        BackgroundColor="#007AFF"
+                        TextColor="White"
+                        Clicked="OnSearchButtonClicked"
+                        Padding="0"/>
+
+                <Button Grid.Column="2"
+                        Text="✖"
+                        FontSize="16"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        CornerRadius="8"
+                        BackgroundColor="#FF3B30"
+                        TextColor="White"
+                        Clicked="OnClearSearchClicked"
+                        Padding="0"/>
+
+                <Button Grid.Column="3"
+                        Text="🔄"
+                        FontSize="16"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        CornerRadius="8"
+                        BackgroundColor="#34C759"
+                        TextColor="White"
+                        Clicked="OnRefreshClicked"
+                        Padding="0"/>
+            </Grid>
+        </Frame>
+
+        <!-- Records List - Modern Card Style -->
+        <Frame Grid.Row="2"
+               Margin="40,0,40,10"
+               Padding="5"
+               BackgroundColor="White"
+               CornerRadius="8"
+               HasShadow="True">
+            <Frame.Shadow>
+                <Shadow Brush="Black" Opacity="0.1" Radius="15" Offset="0,4" />
+            </Frame.Shadow>
+
+            <Grid>
+                <ScrollView>
+                    <CollectionView x:Name="RecordsCollectionView"
+                                    SelectionMode="None"
+                                    Margin="0">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="#F8F9FA"
+                                       CornerRadius="6"
+                                       Padding="0"
+                                       Margin="5,3"
+                                       HasShadow="False"
+                                       BorderColor="#E9ECEF">
+                                    <Grid ColumnDefinitions="36,*" 
+                                          Padding="10,6" 
+                                          ColumnSpacing="10"
+                                          HeightRequest="35"
+                                          BackgroundColor="Transparent">
+
+                                        <!-- Modern Checkbox - MainPage Renkli (#007AFF) -->
+                                        <Border Grid.Column="0"
+                                                WidthRequest="18"
+                                                HeightRequest="18"
+                                                Stroke="#007AFF"
+                                                StrokeThickness="1"
+                                                StrokeShape="RoundRectangle 4"
+                                                BackgroundColor="{Binding IsSelected, Converter={StaticResource BoolToBackgroundConverter}}"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center">
+                                            <Border.Shadow>
+                                                <Shadow Brush="#007AFF" Opacity="0.2" Radius="4" Offset="0,1" />
+                                            </Border.Shadow>
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnCustomCheckboxTapped" 
+                                                                      CommandParameter="{Binding .}"/>
+                                            </Border.GestureRecognizers>
+                                            <Label Text="✓"
+                                                   FontSize="13"
+                                                   FontAttributes="Bold"
+                                                   TextColor="White"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   IsVisible="{Binding IsSelected}"/>
+                                        </Border>
+
+                                        <Label Grid.Column="1"
+                                               VerticalOptions="Center"
+                                               FontSize="10"
+                                               TextColor="#212529"
+                                               LineBreakMode="WordWrap" 
+                                               Margin="0"
+                                               Padding="0">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Document_Type}" 
+                                                          FontAttributes="Bold" 
+                                                          TextColor="#000E38" 
+                                                          FontSize="11"/>
+                                                    <Span Text=" • " TextColor="#CED4DA"/>
+
+                                                    <Span Text="{Binding Course_ID}" 
+                                                          TextColor="#212529" 
+                                                          FontSize="10"
+                                                          FontAttributes="Bold"/>
+                                                    <Span Text=" • " TextColor="#CED4DA"/>
+
+                                                    <Span Text="{Binding Teacher_Name}" 
+                                                          TextColor="#495057" 
+                                                          FontSize="10"/>
+                                                    <Span Text=" • " TextColor="#CED4DA"/>
+
+                                                    <Span Text="{Binding Year}" 
+                                                          TextColor="#34C759" 
+                                                          FontSize="9"
+                                                          FontAttributes="Bold"/>
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding Semester}" 
+                                                          TextColor="#34C759" 
+                                                          FontSize="9"/>
+                                                    <Span Text=" • " TextColor="#CED4DA"/>
+
+                                                    <Span Text="{Binding Archive_Date}" 
+                                                          TextColor="#212529" 
+                                                          FontSize="9"/>
+                                                    <Span Text=" • " TextColor="#CED4DA"/>
+                                                    <Span Text="{Binding Location}" 
+                                                          TextColor="#FF9500" 
+                                                          FontSize="9"/>
+                                                    <Span Text=" • " TextColor="#CED4DA"/>
+
+                                                    <Span Text="{Binding Id, StringFormat='#{0}'}" 
+                                                          FontSize="8" 
+                                                          TextColor="#6C757D"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+
+                <!-- Modern Loading -->
+                <Border x:Name="LoadingIndicator"
+                        IsVisible="False"
+                        BackgroundColor="#000E38"
+                        Opacity="0.95"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill"
+                        StrokeThickness="0">
+                    <VerticalStackLayout Spacing="12"
+                                         HorizontalOptions="Center"
+                                         VerticalOptions="Center">
+                        <ActivityIndicator IsRunning="True"
+                                           Color="White"
+                                           HeightRequest="48"
+                                           WidthRequest="48"/>
+                        <Label Text="Loading records..."
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               TextColor="White"/>
+                        <Label Text="Please wait..."
+                               FontSize="12"
+                               TextColor="#BDC3C7"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Modern Empty State -->
+                <StackLayout x:Name="EmptyStateContainer"
+                             IsVisible="False"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center"
+                             Spacing="12"
+                             Padding="30">
+                    <Label x:Name="EmptyStateIcon"
+                           Text="📁"
+                           FontSize="64"
+                           HorizontalOptions="Center" />
+                    <Label x:Name="EmptyStateTitle"
+                           Text="No records found"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#000E38"
+                           HorizontalOptions="Center"/>
+                    <Label x:Name="EmptyStateMessage"
+                           Text="Start by adding documents to your archive"
+                           FontSize="13"
+                           TextColor="#6C757D"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+                </StackLayout>
+            </Grid>
+        </Frame>
+
+        <!-- Bottom - Modern Action Bar -->
+        <Grid Grid.Row="3" 
+              Padding="40,0,40,30"
+              ColumnDefinitions="*,Auto" 
+              ColumnSpacing="15">
+
+            <!-- Pagination Card -->
+            <Frame Grid.Column="0" 
+                   BackgroundColor="White"
+                   CornerRadius="8"
+                   Padding="15,10"
+                   HasShadow="True"
+                   BorderColor="Transparent">
+                <Frame.Shadow>
+                    <Shadow Brush="Black" Opacity="0.08" Radius="10" Offset="0,3" />
+                </Frame.Shadow>
+
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                    <HorizontalStackLayout Grid.Column="0" Spacing="8" VerticalOptions="Center">
+                        <Label Text="📊" FontSize="16"/>
+                        <Label x:Name="LoadedCountLabel"
+                               Text="Showing 0 of 0"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="#007AFF"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+
+                    <Button x:Name="LoadMoreButton"
+                            Grid.Column="1"
+                            Text="⬇ Load More"
+                            FontSize="11"
+                            FontAttributes="Bold"
+                            HeightRequest="32"
+                            CornerRadius="6"
+                            BackgroundColor="#007AFF"
+                            TextColor="White"
+                            Clicked="OnLoadMoreClicked"
+                            IsVisible="False"
+                            Padding="16,0"/>
+                </Grid>
+            </Frame>
+
+            <!-- Modern Action Buttons - MainPage Renkleri -->
+            <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                <Button x:Name="SelectAllButton"
+                        Text="✓ Select All"
+                        FontSize="11"
+                        FontAttributes="Bold"
+                        HeightRequest="40"
+                        CornerRadius="8"
+                        BackgroundColor="#007AFF"
+                        TextColor="White"
+                        Clicked="OnSelectAllClicked"
+                        Padding="18,0"
+                        Shadow="{Shadow Brush=#007AFF, Opacity=0.3, Radius=10, Offset='0,3'}"/>
+
+                <Button Text="✓✓ All DB"
+                        FontSize="11"
+                        FontAttributes="Bold"
+                        HeightRequest="40"
+                        CornerRadius="8"
+                        BackgroundColor="#5856D6"
+                        TextColor="White"
+                        Clicked="OnSelectAllInDatabaseClicked"
+                        Padding="18,0"
+                        Shadow="{Shadow Brush=#5856D6, Opacity=0.3, Radius=10, Offset='0,3'}"/>
+
+                <Button x:Name="DeleteButton"
+                        Text="🗑 Delete"
+                        FontSize="11"
+                        FontAttributes="Bold"
+                        HeightRequest="40"
+                        CornerRadius="8"
+                        BackgroundColor="#FF3B30"
+                        TextColor="White"
+                        IsEnabled="False"
+                        Clicked="OnDeleteSelectedClicked"
+                        Padding="18,0"
+                        Shadow="{Shadow Brush=#FF3B30, Opacity=0.3, Radius=10, Offset='0,3'}"/>
+
+                <Button Text="✖ Close"
+                        FontSize="11"
+                        FontAttributes="Bold"
+                        HeightRequest="40"
+                        CornerRadius="8"
+                        BackgroundColor="#8E8E93"
+                        TextColor="White"
+                        Clicked="OnCloseClicked"
+                        Padding="18,0"
+                        Shadow="{Shadow Brush=Black, Opacity=0.2, Radius=10, Offset='0,3'}"/>
+            </HorizontalStackLayout>
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

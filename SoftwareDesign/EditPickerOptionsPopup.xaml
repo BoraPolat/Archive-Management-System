@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SoftwareDesign.EditPickerOptionsPopup"
+             BackgroundColor="#F2F2F7">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="40,30,40,30" RowSpacing="15">
+
+        <!-- Arka plan logo -->
+        <Image Source="gau_logo.png"
+               Aspect="AspectFit"
+               Opacity="0.3"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               Grid.RowSpan="4" />
+
+        <!-- Header -->
+        <Frame Grid.Row="0"
+               Padding="20"
+               BackgroundColor="#000E38"
+               CornerRadius="5"
+               HasShadow="True">
+            <Frame.Shadow>
+                <Shadow Brush="Black" Opacity="0.15" Radius="20" Offset="0,8" />
+            </Frame.Shadow>
+            <VerticalStackLayout Spacing="5">
+                <Label Text="✏️ Edit Picker Options" 
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       TextColor="White" 
+                       HorizontalOptions="Center"/>
+                <Label x:Name="FieldNameLabel"
+                       FontSize="12" 
+                       TextColor="#BDC3C7" 
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Stats + Add Button -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+            <Frame Grid.Column="0"
+                   Padding="12"
+                   BackgroundColor="White"
+                   CornerRadius="5"
+                   HasShadow="True">
+                <Frame.Shadow>
+                    <Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,3" />
+                </Frame.Shadow>
+                <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                    <Label Text="Total Options:" FontSize="13" TextColor="#7F8C8D" VerticalOptions="Center"/>
+                    <Label x:Name="OptionsCountLabel" Text="0" FontSize="16" FontAttributes="Bold" TextColor="#000E38" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+            </Frame>
+
+            <Button Grid.Column="1"
+                    Text="➕ Add" 
+                    FontSize="13"
+                    FontAttributes="Bold"
+                    WidthRequest="80"
+                    HeightRequest="45"
+                    BackgroundColor="#34C759" 
+                    TextColor="White" 
+                    CornerRadius="5"
+                    Clicked="OnAddOptionClicked"
+                    Shadow="{Shadow Brush=Black, Opacity=0.2, Radius=5, Offset='0,3'}"/>
+        </Grid>
+
+        <!-- Options List - KOMPAKT -->
+        <Frame Grid.Row="2"
+               Padding="5"
+               BackgroundColor="White"
+               CornerRadius="5"
+               HasShadow="True">
+            <Frame.Shadow>
+                <Shadow Brush="Black" Opacity="0.1" Radius="15" Offset="0,5" />
+            </Frame.Shadow>
+
+            <ScrollView>
+                <CollectionView x:Name="OptionsCollectionView" 
+                                SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <!-- İNCE SATIR -->
+                            <Frame Margin="2,1"
+                                   Padding="10,6"
+                                   BackgroundColor="#F8F9FA"
+                                   CornerRadius="3"
+                                   HasShadow="False"
+                                   BorderColor="#E0E0E0">
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                    <Label Grid.Column="0"
+                                           Text="{Binding Value}" 
+                                           FontSize="13" 
+                                           TextColor="#000E38"
+                                           VerticalOptions="Center"
+                                           LineBreakMode="TailTruncation"/>
+                                    <Button Grid.Column="1"
+                                            Text="✕"
+                                            BackgroundColor="#E74C3C"
+                                            TextColor="White"
+                                            FontSize="14"
+                                            WidthRequest="32"
+                                            HeightRequest="32"
+                                            CornerRadius="4"
+                                            Padding="0"
+                                            Clicked="OnDeleteOptionClicked"/>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </Frame>
+
+        <!-- Action Buttons -->
+        <Grid Grid.Row="3" ColumnDefinitions="*,*" ColumnSpacing="15">
+            <Button Grid.Column="0"
+                    Text="💾 Save" 
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    HeightRequest="45"
+                    BackgroundColor="#34C759" 
+                    TextColor="White" 
+                    CornerRadius="5"
+                    Clicked="OnSaveClicked"
+                    Shadow="{Shadow Brush=Black, Opacity=0.2, Radius=5, Offset='0,3'}"/>
+            <Button Grid.Column="1"
+                    Text="❌ Cancel" 
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    HeightRequest="45"
+                    BackgroundColor="#95A5A6" 
+                    TextColor="White" 
+                    CornerRadius="5"
+                    Clicked="OnCancelClicked"
+                    Shadow="{Shadow Brush=Black, Opacity=0.2, Radius=5, Offset='0,3'}"/>
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

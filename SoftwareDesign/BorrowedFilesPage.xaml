@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SoftwareDesign"
+             x:Class="SoftwareDesign.BorrowedFilesPage"
+             Title="Borrowed Files"
+             BackgroundColor="#F2F2F7">
+
+    <!-- 🔧 Converters -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:StringNotEmptyConverter x:Key="StringNotEmptyConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, Auto, *" Padding="0">
+
+        <!-- 📌 HEADER SECTION -->
+        <Frame Grid.Row="0" 
+               BackgroundColor="#000E38" 
+               CornerRadius="0"
+               Padding="25,20"
+               HasShadow="True"
+               Margin="0">
+
+            <Grid ColumnDefinitions="*, Auto">
+
+                <!-- Left Side: Title & Subtitle -->
+                <VerticalStackLayout Grid.Column="0" 
+                                   VerticalOptions="Center" 
+                                   Spacing="5">
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="📦" FontSize="24"/>
+                        <Label Text="Borrowed Files" 
+                               TextColor="White" 
+                               FontSize="20" 
+                               FontAttributes="Bold"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+
+                    <Label Text="Track and manage loaned documents" 
+                           TextColor="#94a3b8" 
+                           FontSize="12"
+                           Margin="34,0,0,0"/>
+                </VerticalStackLayout>
+
+                <!-- Right Side: Close Button -->
+                <Button Grid.Column="1"
+                        Text="✕"
+                        FontSize="20"
+                        WidthRequest="45"
+                        HeightRequest="45"
+                        CornerRadius="8"
+                        BackgroundColor="Transparent"
+                        TextColor="#FF3B30"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        Clicked="OnCloseClicked" />
+            </Grid>
+        </Frame>
+
+        <!-- 📊 STATISTICS BAR -->
+        <Grid Grid.Row="1" 
+              ColumnDefinitions="*, *" 
+              Margin="40,20,40,15"
+              ColumnSpacing="15">
+
+            <!-- Total Borrowed (Clickable) -->
+            <Frame Grid.Column="0" 
+                   BackgroundColor="#000E38" 
+                   CornerRadius="8" 
+                   Padding="20,15"
+                   HasShadow="True"
+                   BorderColor="Transparent">
+
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnTotalBorrowedTapped"/>
+                </Frame.GestureRecognizers>
+
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="📚" 
+                           FontSize="24" 
+                           HorizontalOptions="Center"/>
+                    <Label x:Name="TotalCountLabel"
+                           Text="0" 
+                           TextColor="White" 
+                           FontSize="28" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+                    <HorizontalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Label Text="Total Borrowed" 
+                               TextColor="#94a3b8" 
+                               FontSize="12"/>
+                        <Label Text="→" 
+                               TextColor="#94a3b8" 
+                               FontSize="12"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Active -->
+            <Frame Grid.Column="1" 
+                   BackgroundColor="#34C759" 
+                   CornerRadius="8" 
+                   Padding="20,15"
+                   HasShadow="True"
+                   BorderColor="Transparent">
+
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="⏱️" 
+                           FontSize="24" 
+                           HorizontalOptions="Center"/>
+                    <Label x:Name="ActiveCountLabel"
+                           Text="0" 
+                           TextColor="White" 
+                           FontSize="28" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+                    <Label Text="Currently Active" 
+                           TextColor="White" 
+                           FontSize="12"
+                           HorizontalOptions="Center"
+                           Opacity="0.9"/>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+
+        <!-- 📋 BORROWED LIST -->
+        <ScrollView Grid.Row="2">
+            <VerticalStackLayout Spacing="0">
+
+                <!-- Empty State -->
+                <VerticalStackLayout x:Name="EmptyView" 
+                                   VerticalOptions="Center" 
+                                   HorizontalOptions="Center" 
+                                   IsVisible="False"
+                                   Spacing="20"
+                                   Margin="0,100,0,0">
+
+                    <Frame BackgroundColor="#000E38"
+                           CornerRadius="60"
+                           WidthRequest="120"
+                           HeightRequest="120"
+                           Padding="0"
+                           HasShadow="True"
+                           HorizontalOptions="Center">
+                        <Label Text="📭" 
+                               FontSize="60" 
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+                    </Frame>
+
+                    <Label Text="No Borrowed Files" 
+                           TextColor="#000E38" 
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+
+                    <Label Text="All documents are in the archive" 
+                           TextColor="Gray" 
+                           FontSize="14"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
+                <!-- Borrowed Items List -->
+                <CollectionView x:Name="BorrowedList" 
+                              Margin="40,0,40,30"
+                              SelectionMode="None">
+
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="15"/>
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+
+                            <!-- 🎴 Card Container -->
+                            <Frame BackgroundColor="White"
+                                   CornerRadius="10"
+                                   Padding="0"
+                                   HasShadow="True"
+                                   BorderColor="Transparent">
+
+                                <Grid RowDefinitions="Auto, Auto, Auto, Auto">
+
+                                    <!-- 🎨 Header with Document Type -->
+                                    <Frame Grid.Row="0"
+                                           BackgroundColor="#000E38"
+                                           CornerRadius="10"
+                                           Padding="20,15"
+                                           HasShadow="False"
+                                           BorderColor="Transparent">
+
+                                        <Grid ColumnDefinitions="*, Auto">
+
+                                            <!-- Document Type -->
+                                            <Label Grid.Column="0"
+                                                   Text="{Binding Document_Type}" 
+                                                   TextColor="White" 
+                                                   FontAttributes="Bold" 
+                                                   FontSize="18"
+                                                   VerticalOptions="Center"/>
+
+                                            <!-- Return Button -->
+                                            <Button Grid.Column="1"
+                                                    Text="↩️ Return"
+                                                    FontSize="13"
+                                                    BackgroundColor="#34C759"
+                                                    TextColor="White"
+                                                    CornerRadius="8"
+                                                    WidthRequest="100"
+                                                    HeightRequest="40"
+                                                    VerticalOptions="Center"
+                                                    Clicked="OnReturnClicked"
+                                                    CommandParameter="{Binding .}"/>
+                                        </Grid>
+                                    </Frame>
+
+                                    <!-- Document Details -->
+                                    <Frame Grid.Row="1"
+                                           Padding="20,15"
+                                           BackgroundColor="White"
+                                           HasShadow="False"
+                                           BorderColor="Transparent">
+                                        <Label Text="{Binding Display_Summary}"
+                                               TextColor="#000E38"
+                                               FontSize="12"
+                                               LineBreakMode="WordWrap"/>
+                                    </Frame>
+
+                                    <!-- 👤 Borrower Info Section -->
+                                    <Grid Grid.Row="2"
+                                          Padding="20,15"
+                                          ColumnDefinitions="Auto, *, Auto"
+                                          ColumnSpacing="15"
+                                          BackgroundColor="White">
+
+                                        <!-- Avatar Circle -->
+                                        <Frame Grid.Column="0"
+                                               BackgroundColor="#007AFF"
+                                               CornerRadius="25"
+                                               WidthRequest="50"
+                                               HeightRequest="50"
+                                               Padding="0"
+                                               HasShadow="False"
+                                               VerticalOptions="Center">
+                                            <Label Text="👤" 
+                                                   FontSize="24"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"/>
+                                        </Frame>
+
+                                        <!-- Borrower Details -->
+                                        <Label Grid.Column="1" 
+                                               Text="{Binding Borrower_Name}" 
+                                               TextColor="#000E38" 
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               VerticalOptions="Center"/>
+
+                                        <!-- Duration Badge -->
+                                        <Frame Grid.Column="2"
+                                               BackgroundColor="#F2F2F7"
+                                               CornerRadius="8"
+                                               Padding="12,8"
+                                               HasShadow="False"
+                                               VerticalOptions="Center">
+                                            <Label Text="{Binding Duration_Counter}" 
+                                                   TextColor="#007AFF"
+                                                   FontSize="12"
+                                                   FontAttributes="Bold"/>
+                                        </Frame>
+                                    </Grid>
+
+                                    <!-- ⏱️ Footer with Date Info -->
+                                    <Frame Grid.Row="3"
+                                           BackgroundColor="#F9FAFB"
+                                           CornerRadius="10"
+                                           Padding="20,12"
+                                           HasShadow="False"
+                                           BorderColor="Transparent">
+
+                                        <HorizontalStackLayout Spacing="8">
+                                            <Label Text="📅" FontSize="14"/>
+                                            <Label Text="{Binding Borrow_Date, StringFormat='Borrowed on {0:dd/MM/yyyy}'}" 
+                                                   TextColor="Gray"
+                                                   FontSize="13"/>
+                                        </HorizontalStackLayout>
+                                    </Frame>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SoftwareDesign.PopulateLocationsPage"
+             Title="Populate Locations"
+             BackgroundColor="#F2F2F7">
+
+	<Grid RowDefinitions="Auto,*">
+		<Frame Grid.Row="0" Padding="15" BackgroundColor="#000E38" CornerRadius="0" HasShadow="False" BorderColor="Transparent">
+			<Grid>
+				<Button Text="← Back"
+                        HorizontalOptions="Start"
+                        TextColor="White"
+                        BackgroundColor="Transparent"
+                        Clicked="OnBackClicked"/>
+
+                <Label Text="📦 Populate Locations"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       FontSize="21"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+			</Grid>
+		</Frame>
+
+		<ScrollView Grid.Row="1" Padding="20">
+			<VerticalStackLayout Spacing="20">
+
+				<Frame BackgroundColor="White" CornerRadius="10" BorderColor="#E0E0E0" HasShadow="False">
+					<Label Text="This tool generates automatic shelf codes for the 'Location' field. Existing data will be overwritten."
+                           TextColor="#333333"
+                           FontSize="13"/>
+				</Frame>
+
+				<Frame BackgroundColor="White" CornerRadius="10" BorderColor="#E0E0E0" HasShadow="False">
+					<VerticalStackLayout Spacing="15">
+
+						<VerticalStackLayout>
+							<Label Text="Row Count (e.g. 15)" FontAttributes="Bold" TextColor="#000000"/>
+							<Entry x:Name="RowCountEntry" Text="15" Keyboard="Numeric" TextColor="#000000" PlaceholderColor="Gray"/>
+						</VerticalStackLayout>
+
+						<VerticalStackLayout>
+							<Label Text="Sides (Comma separated)" FontAttributes="Bold" TextColor="#000000"/>
+							<Entry x:Name="SidesEntry" Text="L,R" TextColor="#000000" PlaceholderColor="Gray"/>
+						</VerticalStackLayout>
+
+						<VerticalStackLayout>
+							<Label Text="Shelf Height (e.g. 5)" FontAttributes="Bold" TextColor="#000000"/>
+							<Entry x:Name="ShelfHeightEntry" Text="5" Keyboard="Numeric" TextColor="#000000" PlaceholderColor="Gray"/>
+						</VerticalStackLayout>
+
+						<VerticalStackLayout>
+							<Label Text="Sections (Comma separated)" FontAttributes="Bold" TextColor="#000000"/>
+							<Entry x:Name="SectionsEntry" Text="A,B,C,D" TextColor="#000000" PlaceholderColor="Gray"/>
+						</VerticalStackLayout>
+
+					</VerticalStackLayout>
+				</Frame>
+
+				<Button Text="GENERATE &amp; SAVE"
+                        HeightRequest="50"
+                        CornerRadius="10"
+                        BackgroundColor="#34C759"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Clicked="OnGenerateClicked"/>
+
+				<Label x:Name="StatusLabel"
+                       Text="Ready..."
+                       HorizontalOptions="Center"
+                       TextColor="#666666"/>
+			</VerticalStackLayout>
+		</ScrollView>
+	</Grid>
+</ContentPage>
