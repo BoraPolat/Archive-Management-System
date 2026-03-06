@@ -481,8 +481,13 @@ Contributions are welcome! Please follow these steps:
 ---
 <a id="license"></a>
 ## 📝 License
-
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+Copyright (c) 2026 Bora Polat
+Email: borapolade@outlook.com
+
+You are free to use, modify, develop, and distribute this software, provided
+that the original author name and license notice are included.
 
 ---
 
