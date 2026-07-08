@@ -510,7 +510,7 @@ that the original author name and license notice are included.
 
 For questions, suggestions, or support:
 
-- **Email**: borapolade@outlook.com
+- **Email**: bora.polat01@gmail.com
 - **University**: Girne American University
 
 ---
